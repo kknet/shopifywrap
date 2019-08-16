@@ -30,6 +30,7 @@ def get_page(url, page, collection_handle=None):
             print('Blocked! Sleeping...')
             time.sleep(180)
             print('Retrying')
+            time.sleep(1)
 
     products = json.loads(data.decode())['products']
     return products
@@ -54,6 +55,11 @@ def get_page_collections(url):
                 print('Blocked! Sleeping...')
                 time.sleep(180)
                 print('Retrying')
+            except:
+                print("Connection error! Please wait...")
+                time.sleep(10)
+                print('Retrying')
+                time.sleep(1)
 
         cols = json.loads(data.decode())['collections']
         if not cols:
@@ -101,9 +107,9 @@ def extract_products(url):
             extract_products_collection("https://{}".format(url), handle)
         with open('./{}.json'.format(url), 'w') as outfile:
             json.dump(all_products, outfile)
+        all_products.clear()
     with open('./{}.json'.format(url)) as json_file:
         return json.load(json_file)
-
 #
 # if __name__ == '__main__':
 #     extract_products('inshout.com')
